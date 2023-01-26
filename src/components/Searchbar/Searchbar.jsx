@@ -19,13 +19,12 @@ export class Searchbar extends Component {
   };
 
   render() {
-    
     const { input } = this.state;
     return (
       <header className="Searchbar">
         <form className="SearchForm" onSubmit={this.handleSubmit}>
           <button type="submit" className="SearchForm-button">
-            < IconSearch/>
+            <IconSearch />
           </button>
 
           <input
