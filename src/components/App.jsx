@@ -5,6 +5,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { getImagesApi } from 'utils/imagesApi';
 import { Button } from './Button/Button';
 import { Modal } from './Modal/Modal';
+import { Loader } from './Loader/Loader';
 
 export class App extends Component {
   state = {
@@ -76,7 +77,7 @@ export class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.changeQuery} />
-        {loader === true && <h1>...Loading</h1>}
+        {loader === true && <Loader/>}
         {query !== '' && (
           <ImageGallery
             images={images}
