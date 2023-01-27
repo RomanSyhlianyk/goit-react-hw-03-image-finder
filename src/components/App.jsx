@@ -77,21 +77,17 @@ export class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.changeQuery} />
-        {loader === true && <Loader/>}
+        {loader === true && <Loader />}
         {query !== '' && (
           <ImageGallery
             images={images}
             openModal={this.openModal}
-            imagesItemRef={this.imagesItemRef}
+            // imagesItemRef={this.imagesItemRef}
           />
         )}
         {images.length > 0 && <Button onClick={this.loadNextPage} />}
         {isModalOpen && (
-          <Modal
-            images={images}
-            closeModal={this.closeModal}
-            modalUrl={modalUrl}
-          />
+          <Modal closeModal={this.closeModal} modalUrl={modalUrl} />
         )}
       </>
     );

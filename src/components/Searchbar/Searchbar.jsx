@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { IconSearch } from 'icons';
 import { Component } from 'react';
 
@@ -19,6 +20,7 @@ export class Searchbar extends Component {
   };
 
   render() {
+    // console.log(this.props);
     const { input } = this.state;
     return (
       <header className="Searchbar">
@@ -41,3 +43,7 @@ export class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit:PropTypes.func.isRequired,
+};
