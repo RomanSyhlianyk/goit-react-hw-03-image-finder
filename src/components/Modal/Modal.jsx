@@ -1,17 +1,37 @@
 import PropTypes from 'prop-types';
+import { Component } from 'react';
 
-export const Modal = ({ closeModal, modalUrl }) => {
-  console.log(modalUrl);
-  return (
-    <div className="Overlay" onClick={closeModal}>
-      <div className="Modal">
-        <img src={modalUrl} alt="" />
+export class Modal extends Component {
+  handleClick = event => {
+    if (event.target.className !== 'Overlay') return;
+    this.props.closeModal();
+  };
+
+  closeModalByPressingEscape = event => {
+    if (event.key !== 'Escape') return;
+    this.props.closeModal();
+  };
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.closeModalByPressingEscape);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.closeModalByPressingEscape);
+  }
+
+  render() {
+    return (
+      <div className="Overlay" onClick={this.handleClick}>
+        <div className="Modal">
+          <img src={this.props.modalUrl} alt="" />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 Modal.propTypes = {
   closeModal: PropTypes.func.isRequired,
-  modalUrl:PropTypes.string.isRequired,
+  modalUrl: PropTypes.string.isRequired,
 };

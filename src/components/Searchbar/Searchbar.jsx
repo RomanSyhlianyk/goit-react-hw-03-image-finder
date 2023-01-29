@@ -7,20 +7,19 @@ export class Searchbar extends Component {
     input: '',
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = event => {
+    event.preventDefault();
     this.props.onSubmit(this.state.input);
     this.setState({ input: '' });
-    // console.log(this.props.onSubmit);
+    
   };
 
-  handleChange = e => {
-    const { value } = e.target;
+  handleChange = event => {
+    const { value } = event.target;
     this.setState({ input: value });
   };
 
   render() {
-    // console.log(this.props);
     const { input } = this.state;
     return (
       <header className="Searchbar">

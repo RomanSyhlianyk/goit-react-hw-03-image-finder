@@ -38,37 +38,32 @@ export class App extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    if (prevState.query !== this.state.query) {
-      this.setState({ loader: true });
-      try {
-        const { query, page } = this.state;
-        const dataImages = await getImagesApi(query, page);
-
-        this.setState({ images: dataImages.data.hits });
-      } catch (error) {
-        this.setState({ error: error.message });
-      } finally {
-        this.setState({ loader: false });
-      }
-    } else if (prevState.page !== this.state.page) {
-      this.setState({ loader: true });
-      try {
-        const { query, page } = this.state;
-        const dataImages = await getImagesApi(query, page);
-        // console.log(dataImages);
-        this.setState(prev => ({
-          images: [...prev.images, ...dataImages.data.hits],
-        }));
-        //
-      } catch (error) {
-        this.setState({ error: error.message });
-      } finally {
-        this.setState({ loader: false });
-      }
+    if (
+      prevState.query !== this.state.query ||
+      prevState.page !== this.state.page
+    ) {
+      this.getImages();
     }
-    // console.log(this.imagesItemRef.current);
-    // this.imagesItemRef.current?.scrollIntoView({ block: 'start' });
   }
+
+  getImages = async () => {
+    this.setState({ loader: true });
+    try {
+      const { query, page } = this.state;
+      const dataImages = await getImagesApi(query, page);
+
+      this.setState(prev => ({
+        images:
+          this.state.page === 1
+            ? dataImages.data.hits
+            : [...prev.images, ...dataImages.data.hits],
+      }));
+    } catch (error) {
+      this.setState({ error: error.message });
+    } finally {
+      this.setState({ loader: false });
+    }
+  };
 
   render() {
     const { images, error, loader, query, isModalOpen, modalUrl } = this.state;
@@ -79,13 +74,11 @@ export class App extends Component {
         <Searchbar onSubmit={this.changeQuery} />
         {loader === true && <Loader />}
         {query !== '' && (
-          <ImageGallery
-            images={images}
-            openModal={this.openModal}
-            // imagesItemRef={this.imagesItemRef}
-          />
+          <ImageGallery images={images} openModal={this.openModal} />
         )}
-        {images.length > 0 && <Button onClick={this.loadNextPage} />}
+        {images.length > 0 && loader === false && (
+          <Button onClick={this.loadNextPage} />
+        )}
         {isModalOpen && (
           <Modal closeModal={this.closeModal} modalUrl={modalUrl} />
         )}
